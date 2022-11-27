@@ -15,10 +15,7 @@ import static jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        System.out.println("Unauthorized request: " + request.getRequestURI());
-        authException.printStackTrace();
-
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.sendError(SC_UNAUTHORIZED, "Unauthorized");
     }
 
