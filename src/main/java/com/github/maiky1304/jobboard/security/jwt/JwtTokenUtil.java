@@ -91,6 +91,8 @@ public class JwtTokenUtil {
             return null;
         }
 
+        System.out.println(decodedJWT.getSubject());
+
         return userRepository.findByEmail(decodedJWT.getSubject());
     }
 

@@ -40,7 +40,14 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         User user = jwtTokenUtil.getUserFromToken(token);
-        assert user != null;
+        if (user == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (jwtTokenUtil.eligibleForRefresh(token)) {
+            response.setHeader(AUTHORIZATION, jwtTokenUtil.generateJwt(user));
+        }
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 user,
