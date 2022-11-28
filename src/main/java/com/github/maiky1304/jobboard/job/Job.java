@@ -1,14 +1,13 @@
 package com.github.maiky1304.jobboard.job;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.github.maiky1304.jobboard.user.User;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "jobs")
 @NoArgsConstructor
 @Getter @Setter
 public class Job {
@@ -21,6 +20,10 @@ public class Job {
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
 
     public Job(String title, String content) {
         this.title = title;

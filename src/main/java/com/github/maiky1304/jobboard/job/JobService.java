@@ -1,7 +1,9 @@
 package com.github.maiky1304.jobboard.job;
 
 import com.github.maiky1304.jobboard.job.exceptions.JobNotFoundException;
+import com.github.maiky1304.jobboard.user.User;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,18 @@ public class JobService {
 
     public void deleteJob(Long id) {
         jobRepository.deleteById(id);
+    }
+
+    public boolean isJobOwner(Long id, Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+
+        if (!(principal instanceof User user)) {
+            return false;
+        }
+
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new JobNotFoundException(id));
+        return job.getAuthor().getUsername().equals(user.getUsername());
     }
 
 }

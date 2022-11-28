@@ -1,19 +1,11 @@
 package com.github.maiky1304.jobboard.job;
 
-import jakarta.annotation.security.RolesAllowed;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriBuilderFactory;
-import org.springframework.web.util.UriUtils;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -40,14 +32,14 @@ public class JobController {
     }
 
     @PutMapping("{id}")
-    @Secured({ "ADMIN" })
+    @PreAuthorize("hasRole('ADMIN') || @jobService.isJobOwner(#id, authentication)")
     public Job updateJob(@PathVariable Long id, @RequestBody Job job, Authentication authentication) {
         System.out.println(authentication.getAuthorities());
         return jobService.updateJob(id, job);
     }
 
     @DeleteMapping("{id}")
-    @Secured({ "ADMIN" })
+    @PreAuthorize("hasRole('ADMIN') || @jobService.isJobOwner(#id, authentication)")
     public void deleteJob(@PathVariable Long id) {
         jobService.deleteJob(id);
     }
