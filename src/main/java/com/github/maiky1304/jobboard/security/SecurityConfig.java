@@ -2,6 +2,8 @@ package com.github.maiky1304.jobboard.security;
 
 import com.github.maiky1304.jobboard.security.jwt.JwtAuthenticationEntryPoint;
 import com.github.maiky1304.jobboard.security.jwt.JwtFilter;
+import com.github.maiky1304.jobboard.user.User;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +13,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -70,6 +74,7 @@ public class SecurityConfig {
                 jwtFilter,
                 UsernamePasswordAuthenticationFilter.class
         );
+
 
         return http.build();
     }

@@ -4,14 +4,17 @@ import com.github.maiky1304.jobboard.security.jwt.model.AuthRequest;
 import com.github.maiky1304.jobboard.security.jwt.model.AuthResponse;
 import com.github.maiky1304.jobboard.user.User;
 import com.github.maiky1304.jobboard.user.UserService;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -35,6 +38,17 @@ public class AuthController {
     @PostMapping("/register")
     public User onRegister(@RequestBody User user) {
         return userService.handleRegistration(passwordEncoder, user);
+    }
+
+    @ExceptionHandler({ ConstraintViolationException.class })
+    public Map<String, List<String>> handleException(ConstraintViolationException ex) {
+        HashMap<String, List<String>> errors = new HashMap<>();
+        errors.put("errors", ex.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .toList()
+        );
+        return errors;
     }
 
 }

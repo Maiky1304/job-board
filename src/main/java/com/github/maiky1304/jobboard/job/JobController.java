@@ -1,8 +1,11 @@
 package com.github.maiky1304.jobboard.job;
 
+import com.github.maiky1304.jobboard.user.User;
+import com.github.maiky1304.jobboard.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,12 +15,15 @@ import java.util.List;
 @AllArgsConstructor
 public class JobController {
 
+    private final UserService userService;
     private final JobService jobService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Job createJob(@RequestBody Job job) {
-        return jobService.createJob(job);
+    public Job createJob(@RequestBody Job job, Authentication authentication) {
+        User author = userService.extractFromAuthentication(authentication);
+
+        return jobService.createJob(job, author);
     }
 
     @GetMapping("{id}")

@@ -1,10 +1,10 @@
 package com.github.maiky1304.jobboard.job;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.maiky1304.jobboard.user.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "jobs")
@@ -26,10 +26,20 @@ public class Job {
     )
     private String content;
 
+    @JsonIgnoreProperties({
+            "password",
+            "locked",
+            "enabled",
+            "accountNonExpired",
+            "accountNonLocked",
+            "credentialsNonExpired",
+            "username",
+            "authorities",
+            "role"
+    })
     @ManyToOne
     @JoinColumn(
-            name = "author_id",
-            nullable = false
+            name = "author_id"
     )
     private User author;
 

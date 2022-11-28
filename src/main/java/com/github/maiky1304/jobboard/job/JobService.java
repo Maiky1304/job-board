@@ -17,7 +17,9 @@ public class JobService {
 
     private final JobRepository jobRepository;
 
-    public Job createJob(Job job) {
+    public Job createJob(Job job, User author) {
+        job.setAuthor(author);
+
         return jobRepository.save(job);
     }
 
@@ -57,7 +59,7 @@ public class JobService {
 
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new JobNotFoundException(id));
-        return job.getAuthor().getUsername().equals(user.getUsername());
+        return job.getAuthor().getEmail().equals(user.getUsername());
     }
 
 }

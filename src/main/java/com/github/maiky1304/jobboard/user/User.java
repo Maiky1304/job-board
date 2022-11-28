@@ -1,8 +1,14 @@
 package com.github.maiky1304.jobboard.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,15 +19,28 @@ import java.util.Collections;
 @Table(name = "users")
 @Getter
 @Setter
+@NoArgsConstructor
+@ToString
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String email;
     @Column(nullable = false)
+    @NotBlank(message = "Field 'firstName' is mandatory.")
+    private String firstName;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Field 'lastName' is mandatory.")
+    private String lastName;
+
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "Field 'email' is mandatory.")
+    private String email;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Field 'password' is mandatory.")
     private String password;
 
     private Boolean locked = false;

@@ -7,6 +7,7 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +24,20 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username);
+    }
+
+    /**
+     * Loads a user by looking for it in the {@see Authentication} object.
+     * @param authentication The authentication object.
+     * @return The user or null if not found.
+     */
+    public @Nullable User extractFromAuthentication(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()
+                || authentication.getPrincipal() == null) {
+            return null;
+        }
+
+        return (User) authentication.getPrincipal();
     }
 
     public @Nullable AuthResponse handleAuthentication(AuthenticationManager authenticationManager, AuthRequest request) {
