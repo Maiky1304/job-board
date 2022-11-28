@@ -1,7 +1,5 @@
 package com.github.maiky1304.jobboard.security.jwt;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.github.maiky1304.jobboard.user.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

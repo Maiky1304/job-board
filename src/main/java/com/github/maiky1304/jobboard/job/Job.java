@@ -9,25 +9,28 @@ import lombok.Setter;
 @Entity
 @Table(name = "jobs")
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class Job {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(
+            columnDefinition = "TEXT",
+            nullable = false
+    )
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(
+            name = "author_id",
+            nullable = false
+    )
     private User author;
-
-    public Job(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
 
 }

@@ -11,7 +11,8 @@ import java.util.Collections;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter
+@Getter
+@Setter
 public class User implements UserDetails {
 
     @Id
@@ -28,6 +29,17 @@ public class User implements UserDetails {
 
     @Enumerated(value = EnumType.STRING)
     private UserRole role = UserRole.USER;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(Long id, String email, String password) {
+        this(email, password);
+        this.id = id;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

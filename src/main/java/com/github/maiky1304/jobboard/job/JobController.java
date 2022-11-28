@@ -3,7 +3,6 @@ package com.github.maiky1304.jobboard.job;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +32,7 @@ public class JobController {
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN') || @jobService.isJobOwner(#id, authentication)")
-    public Job updateJob(@PathVariable Long id, @RequestBody Job job, Authentication authentication) {
-        System.out.println(authentication.getAuthorities());
+    public Job updateJob(@PathVariable Long id, @RequestBody Job job) {
         return jobService.updateJob(id, job);
     }
 

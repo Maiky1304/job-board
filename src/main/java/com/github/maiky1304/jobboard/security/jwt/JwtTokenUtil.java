@@ -19,14 +19,13 @@ public class JwtTokenUtil {
 
     public static final long JWT_TOKEN_VALIDITY = 3600L * 24L * 7L;
     public static final long JWT_TOKEN_REFRESH_AFTER = 3600L;
-
+    private final UserRepository userRepository;
     @Value("${jwt.secret}")
     private String secret;
 
-    private final UserRepository userRepository;
-
     /**
      * Generates a JWT token for the given user
+     *
      * @param token The token to check
      * @return Whether the token is eligible for a refresh or not
      */
@@ -40,6 +39,7 @@ public class JwtTokenUtil {
 
     /**
      * Generates a JWT token for the given {@see User}
+     *
      * @param user The user to generate the token for
      * @return The generated JWT token
      */
@@ -56,6 +56,7 @@ public class JwtTokenUtil {
 
     /**
      * Verifies a JWT token and returns the decoded token
+     *
      * @param token The token to verify
      * @return The decoded token
      */
@@ -68,6 +69,7 @@ public class JwtTokenUtil {
 
     /**
      * Checks if a JWT token is expired
+     *
      * @param token The token to check
      * @return True if the token is expired or is invalid, false otherwise
      */
@@ -82,6 +84,7 @@ public class JwtTokenUtil {
 
     /**
      * Retrieves the {@see User} from the given JWT token
+     *
      * @param token The token to retrieve the user from
      * @return The user from the token or null if token is invalid.
      */
