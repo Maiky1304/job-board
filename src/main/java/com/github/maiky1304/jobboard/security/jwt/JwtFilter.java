@@ -1,5 +1,6 @@
 package com.github.maiky1304.jobboard.security.jwt;
 
+import com.github.maiky1304.jobboard.session.SessionService;
 import com.github.maiky1304.jobboard.user.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,6 +23,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
+    private final SessionService sessionService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,6 +43,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
         User user = jwtTokenUtil.getUserFromToken(token);
         if (user == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (!sessionService.isSessionActive(token)) {
             filterChain.doFilter(request, response);
             return;
         }

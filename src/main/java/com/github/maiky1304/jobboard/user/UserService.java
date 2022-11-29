@@ -3,6 +3,8 @@ package com.github.maiky1304.jobboard.user;
 import com.github.maiky1304.jobboard.security.jwt.JwtTokenUtil;
 import com.github.maiky1304.jobboard.security.jwt.model.AuthRequest;
 import com.github.maiky1304.jobboard.security.jwt.model.AuthResponse;
+import com.github.maiky1304.jobboard.session.Session;
+import com.github.maiky1304.jobboard.session.SessionService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
+    private final SessionService sessionService;
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -52,6 +55,9 @@ public class UserService implements UserDetailsService {
 
         User user = userRepository.findByEmail(request.getEmail());
         String token = jwtTokenUtil.generateJwt(user);
+
+        Session session = new Session(token, user);
+        sessionService.activateSession(session);
 
         return new AuthResponse(token);
     }
