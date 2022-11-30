@@ -1,6 +1,5 @@
 package com.github.maiky1304.jobboard.job;
 
-import com.github.maiky1304.jobboard.user.User;
 import com.github.maiky1304.jobboard.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,9 +20,7 @@ public class JobController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Job createJob(@RequestBody Job job, Authentication authentication) {
-        User author = userService.extractFromAuthentication(authentication);
-
-        return jobService.createJob(job, author);
+        return jobService.createJob(job, authentication);
     }
 
     @GetMapping("{id}")

@@ -19,7 +19,10 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
+    @Column(nullable = false)
     private String token;
+
+    private String refreshToken;
 
     @OneToOne
     @JoinColumn(name = "user_id")

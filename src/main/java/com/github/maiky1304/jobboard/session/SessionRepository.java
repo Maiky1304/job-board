@@ -11,5 +11,6 @@ public interface SessionRepository extends JpaRepository<Session, UUID> {
 
     Session findByUser(User user);
     Session findByToken(String token);
+    Session findByRefreshToken(String refreshToken);
 
 }

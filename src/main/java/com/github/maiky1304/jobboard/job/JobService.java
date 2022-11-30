@@ -2,6 +2,7 @@ package com.github.maiky1304.jobboard.job;
 
 import com.github.maiky1304.jobboard.job.exceptions.JobNotFoundException;
 import com.github.maiky1304.jobboard.user.User;
+import com.github.maiky1304.jobboard.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,11 @@ import java.util.Objects;
 @AllArgsConstructor
 public class JobService {
 
+    private final UserService userService;
     private final JobRepository jobRepository;
 
-    public Job createJob(Job job, User author) {
+    public Job createJob(Job job, Authentication authentication) {
+        User author = userService.extractFromAuthentication(authentication);
         job.setAuthor(author);
 
         return jobRepository.save(job);

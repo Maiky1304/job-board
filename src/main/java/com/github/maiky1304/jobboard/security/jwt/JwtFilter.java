@@ -1,5 +1,6 @@
 package com.github.maiky1304.jobboard.security.jwt;
 
+import com.github.maiky1304.jobboard.session.Session;
 import com.github.maiky1304.jobboard.session.SessionService;
 import com.github.maiky1304.jobboard.user.User;
 import jakarta.servlet.FilterChain;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -52,8 +54,24 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
+        System.out.println("session is active!");
+
+        Session session = sessionService.getSessionByToken(token);
+        if (session == null) {
+            session = sessionService.getSessionByRefreshToken(token);
+        }
+
+        if (Objects.equals(session.getRefreshToken(), token)) {
+            session.setToken(token);
+            session.setRefreshToken(null);
+            sessionService.updateSession(session);
+        }
+
         if (jwtTokenUtil.eligibleForRefresh(token)) {
-            response.setHeader(AUTHORIZATION, jwtTokenUtil.generateJwt(user));
+            session.setRefreshToken(jwtTokenUtil.generateJwt(user));
+            sessionService.updateSession(session);
+
+            response.setHeader(AUTHORIZATION, session.getRefreshToken());
         }
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

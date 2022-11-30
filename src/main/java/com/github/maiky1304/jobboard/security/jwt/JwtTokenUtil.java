@@ -61,7 +61,6 @@ public class JwtTokenUtil {
      * @return The decoded token
      */
     public @Nullable DecodedJWT verifyJwt(String token) {
-        byte[] tokenBytes = token.getBytes();
         return JWT.require(Algorithm.HMAC512(this.secret.getBytes()))
                 .build()
                 .verify(token);
