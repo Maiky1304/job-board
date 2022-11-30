@@ -5,18 +5,12 @@ import com.github.maiky1304.jobboard.security.jwt.model.AuthResponse;
 import com.github.maiky1304.jobboard.session.SessionService;
 import com.github.maiky1304.jobboard.user.User;
 import com.github.maiky1304.jobboard.user.UserService;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -47,17 +41,6 @@ public class AuthController {
     public ResponseEntity<?> onLogout(Authentication authentication) {
         User user = userService.extractFromAuthentication(authentication);
         return ResponseEntity.ok(sessionService.invalidateSessionByUser(user));
-    }
-
-    @ExceptionHandler({ ConstraintViolationException.class })
-    public Map<String, List<String>> handleException(ConstraintViolationException ex) {
-        HashMap<String, List<String>> errors = new HashMap<>();
-        errors.put("errors", ex.getConstraintViolations()
-                .stream()
-                .map(ConstraintViolation::getMessage)
-                .toList()
-        );
-        return errors;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.github.maiky1304.jobboard.job;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.maiky1304.jobboard.user.User;
 import jakarta.persistence.*;
