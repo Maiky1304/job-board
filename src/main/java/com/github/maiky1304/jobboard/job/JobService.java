@@ -45,6 +45,12 @@ public class JobService {
         if (job.getContent() != null && !Objects.equals(job.getContent(), foundJob.getContent())) {
             foundJob.setContent(job.getContent());
         }
+        if (job.getType() != null && !Objects.equals(job.getType(), foundJob.getType())) {
+            foundJob.setType(job.getType());
+        }
+        if (job.getSalary() != null && !Objects.equals(job.getSalary(), foundJob.getSalary())) {
+            foundJob.setSalary(job.getSalary());
+        }
 
         return jobRepository.save(foundJob);
     }

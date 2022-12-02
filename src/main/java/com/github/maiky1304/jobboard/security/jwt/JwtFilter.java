@@ -54,8 +54,6 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        System.out.println("session is active!");
-
         Session session = sessionService.getSessionByToken(token);
         if (session == null) {
             session = sessionService.getSessionByRefreshToken(token);

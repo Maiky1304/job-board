@@ -25,6 +25,14 @@ public class Job {
     )
     private String content;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private JobType type = JobType.FULL_TIME;
+
+    @Embedded
+    @Column(nullable = false)
+    private JobSalary salary;
+
     @JsonIgnoreProperties({
             "password",
             "locked",
